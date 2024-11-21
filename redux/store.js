@@ -1,27 +1,9 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { thunk } from "redux-thunk";
-import {
-  categoryProductsReducer,
-  inputResultsReducer,
-  productReducer,
-  productsReducer,
-  searchResultsReducer,
-} from "./reducer/productsReducer";
-import { categoriesReducer } from "./reducer/categoryReducer";
-import { cartReducer } from "./reducer/cartReducer";
-import { checkoutReducer } from "./reducer/checkoutReducer";
-import { userReducer } from "./reducer/userReducer";
+import { loginReducer } from "./reducer/AuthReducer";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 const reducer = combineReducers({
-  products: productsReducer,
-  product: productReducer,
-  inputResults: inputResultsReducer,
-  searchResults: searchResultsReducer,
-  categoryProducts: categoryProductsReducer,
-  categories: categoriesReducer,
-  cart: cartReducer,
-  checkout: checkoutReducer,
-  user: userReducer,
+  login: loginReducer,
 });
 
 export const store = configureStore({

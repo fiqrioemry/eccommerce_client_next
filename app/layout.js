@@ -1,6 +1,8 @@
 import "./globals.css";
+import { store } from "@/redux/store";
+import { Provider } from "react-redux";
 import { Inter } from "next/font/google";
-import { GlobalProvider } from "@/context";
+import { GlobalProvider } from "@/provider/GlobalProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +15,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter}`}>
-        <GlobalProvider>{children}</GlobalProvider>
+        <Provider store={store}>
+          <GlobalProvider>{children}</GlobalProvider>
+        </Provider>
       </body>
     </html>
   );

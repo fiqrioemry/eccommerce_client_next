@@ -5,18 +5,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import UserProfile from "./common/UserProfile";
 import ShoppingCart from "./common/ShoppingCart";
-import { AuthProvider } from "@/context";
 
 const Header = () => {
-  const { user, googleSignIn, googleSignOut } = AuthProvider();
-
-  const handleSignIn = async () => {
-    await googleSignIn();
-  };
-
-  const handleSignOut = async () => {
-    await googleSignOut();
-  };
   return (
     <header className="py-3 borders-b">
       <div className="container mx-auto flex-between">
@@ -30,7 +20,7 @@ const Header = () => {
         </div>
 
         <div className="flex-between space-x-4">
-          <ShoppingCart />
+          {/* <ShoppingCart />
           {user ? (
             <UserProfile handleSignOut={handleSignOut} />
           ) : (
@@ -39,7 +29,7 @@ const Header = () => {
                 Sign-In
               </Button>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </header>
