@@ -1,12 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button } from "./ui/button";
-import { MdShoppingCart, MdOutlineMenu, MdP } from "react-icons/md";
-import { FaUserCircle } from "react-icons/fa";
+import React from "react";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import UserProfile from "./common/UserProfile";
+import ShoppingCart from "./common/ShoppingCart";
+import { AuthProvider } from "@/context";
+
 const Header = () => {
-  const [user, setUser] = useState(true);
+  const { user, googleSignIn, googleSignOut } = AuthProvider();
+
+  const handleSignIn = async () => {
+    await googleSignIn();
+  };
+
+  const handleSignOut = async () => {
+    await googleSignOut();
+  };
   return (
     <header className="py-3 borders-b">
       <div className="container mx-auto flex-between">
@@ -20,21 +30,14 @@ const Header = () => {
         </div>
 
         <div className="flex-between space-x-4">
-          <button>
-            <MdShoppingCart className="text-3xl" />
-          </button>
-          <button className="flex md:hidden">
-            <MdOutlineMenu className="text-3xl" />
-          </button>
+          <ShoppingCart />
           {user ? (
-            <button className="hidden md:flex-between space-x-4">
-              <FaUserCircle className="text-3xl" />
-              <span>username 01</span>
-            </button>
+            <UserProfile handleSignOut={handleSignOut} />
           ) : (
-            <div className="hidden md:block space-x-4">
-              <Button className="text-xs">Sign-In</Button>
-              <Button className="text-xs">Sign-up</Button>
+            <div className="flex space-x-4">
+              <Button onClick={handleSignIn} className="text-xs">
+                Sign-In
+              </Button>
             </div>
           )}
         </div>

@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "./ui/button";
-import ProductCard from "./common/ProductCard";
-import SectionHead from "./common/SectionHead";
+import { Button } from "../ui/button";
+import ProductCard from "../common/ProductCard";
+import SectionHead from "../common/SectionHead";
 
 const RecommendProduct = () => {
   return (

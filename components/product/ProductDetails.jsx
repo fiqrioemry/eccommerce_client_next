@@ -4,7 +4,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 
 const ProductDetails = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 space-y-4 md:space-y-0">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 space-y-4 md:space-y-0 ">
       {/* product images */}
       <div className="w-full flex flex-wrap space-y-2 md:space-y-0">
         <div className="w-full flex mt-4 md:mt-0 order-2 md:order-none md:flex-col md:w-[20%] justify-between">

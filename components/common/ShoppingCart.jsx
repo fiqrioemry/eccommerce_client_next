@@ -6,7 +6,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { MdShoppingCart } from "react-icons/md";
-import { FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
 
 const ShoppingCart = () => {
@@ -17,7 +16,7 @@ const ShoppingCart = () => {
       <PopoverTrigger asChild>
         <MdShoppingCart className="text-3xl cursor-pointer" />
       </PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent className="w-80 bg-background">
         <div>
           <h3 className="borders-b py-4">Shopping Cart</h3>
         </div>

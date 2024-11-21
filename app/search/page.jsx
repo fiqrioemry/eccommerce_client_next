@@ -2,7 +2,6 @@
 
 import React from "react";
 import FilterBox from "@/components/search/FilterBox";
-
 import DisplayContet from "@/components/search/DisplayContet";
 
 const page = () => {
