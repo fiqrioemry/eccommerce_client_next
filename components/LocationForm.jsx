@@ -11,7 +11,6 @@ const LocationForm = () => {
     cities: null,
     selectedCity: null,
   });
-  console.log(location.provinces);
 
   const getProvince = async () => {
     try {
@@ -64,18 +63,33 @@ const LocationForm = () => {
     }
   }, [location.selectedProvince]);
 
-  console.log(location.cities);
-
   if (!location.provinces) return <LoadingPage />;
+
+  const formStyle = "space-y-4";
+  const wrapperStyle = "py-4 px-4 space-y-4";
+  const buttonStyle = "w-full rounded-md tracking-[2px]";
+  const titleStyle = "flex-center text-2xl uppercase font-medium";
   return (
     <div className="w-[350px]">
       <FormElement
         formTitle="Detail Lokasi"
+        formStyle={formStyle}
+        titleStyle={titleStyle}
         buttonTitle="Submit"
-        buttonStyle="w-full"
-        wrapperStyle="py-4 px-4"
+        buttonStyle={buttonStyle}
+        wrapperStyle={wrapperStyle}
         handleSubmit={handleSubmit}
       >
+        <SelectElement
+          //   title="Province"
+          handleChange={handleChange}
+          subtitle="Pilih Province"
+          option={location.provinces}
+          keyName="provinces"
+          optionValue="province_id"
+          optionName="province"
+        />
+
         <SelectElement
           //   title="Province"
           handleChange={handleChange}

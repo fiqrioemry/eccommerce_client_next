@@ -5,6 +5,7 @@ const FormElement = ({
   formTitle,
   buttonTitle,
   children,
+  titleStyle,
   formStyle,
   buttonStyle,
   wrapperStyle,
@@ -12,9 +13,7 @@ const FormElement = ({
 }) => {
   return (
     <div className={wrapperStyle}>
-      <div className="flex-center text-2xl uppercase font-medium">
-        {formTitle}
-      </div>
+      <div className={titleStyle}>{formTitle}</div>
       <form onSubmit={handleSubmit} className={formStyle}>
         {children}
         <ButtonElement title={buttonTitle} style={buttonStyle} />

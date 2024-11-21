@@ -10,15 +10,17 @@ const SelectInput = ({
   optionName,
 }) => {
   const marginStyle = "flex flex-col";
-  const titleStyle = "text-lg font-medium mb-2";
+  const titleStyle = "text-lg font-medium";
   const selectStyle =
-    "border border-slate-500 p-2 mb-4 rounded-md flex-center cursor-pointer";
+    "border border-slate-500 p-2 rounded-md flex-center cursor-pointer";
 
   return (
     <div className={marginStyle}>
-      <label htmlFor={keyName} className={titleStyle}>
-        {!title ? null : title}
-      </label>
+      {!title ? null : (
+        <label htmlFor={keyName} className={titleStyle}>
+          {title}
+        </label>
+      )}
       <select
         id={keyName}
         name={keyName}
