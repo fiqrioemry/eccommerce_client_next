@@ -2,11 +2,9 @@ import React from "react";
 
 const LoadingPage = () => {
   return (
-    <section>
-      <div className="flex-center h-screen text-3xl font-semibold">
-        PAGE LOADING ...
-      </div>
-    </section>
+    <div className="h-screen flex-center text-2xl">
+      <div>PAGE IS LOADING</div>
+    </div>
   );
 };
 

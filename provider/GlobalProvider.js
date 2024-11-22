@@ -1,7 +1,7 @@
 "use client";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { store } from "@/redux/store";
+import { Provider } from "react-redux";
 import React, { createContext } from "react";
 import { usePathname } from "next/navigation";
 import { AuthProvider } from "./AuthProvider";
@@ -12,12 +12,10 @@ export const GlobalProvider = ({ children }) => {
   const pathname = usePathname();
 
   return (
-    <GlobalContext.Provider>
-      <AuthProvider>
-        <Header />
-        {children}
-        <Footer />
-      </AuthProvider>
-    </GlobalContext.Provider>
+    <Provider store={store}>
+      <GlobalContext.Provider value={{}}>
+        <AuthProvider>{children}</AuthProvider>
+      </GlobalContext.Provider>
+    </Provider>
   );
 };

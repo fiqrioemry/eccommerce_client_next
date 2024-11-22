@@ -1,20 +1,34 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import ImageElement from "../ImageElement";
 
 const ProductDetails = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 space-y-4 md:space-y-0 ">
+    <div className="product-detail-parent">
       {/* product images */}
-      <div className="w-full flex flex-wrap space-y-2 md:space-y-0">
-        <div className="w-full flex mt-4 md:mt-0 order-2 md:order-none md:flex-col md:w-[20%] justify-between">
+      <div className="product-detail-image">
+        <div className="product-detail-multiple">
           {[...Array(4)].map((_, index) => {
             return (
-              <div className="w-[80px] h-[80px] borders" key={index}></div>
+              <ImageElement
+                width={80}
+                height={80}
+                style="detail-multiple-image"
+                alt=""
+                path="/assets/empty_cart.png"
+                key={index}
+              />
             );
           })}
         </div>
-        <div className="w-full md:h-auto h-[350px] md:w-[80%] borders"></div>
+        <ImageElement
+          width={350}
+          height={350}
+          style="detail-single-image"
+          alt=""
+          path="/assets/empty_cart.png"
+        />
       </div>
 
       {/* product description */}

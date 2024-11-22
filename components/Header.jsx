@@ -5,8 +5,14 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import UserProfile from "./common/UserProfile";
 import ShoppingCart from "./common/ShoppingCart";
+import InputElement from "./InputElement";
+import { useAuth } from "@/provider/AuthProvider";
+import SearchDropdown from "./SearchDropdown";
+import Link from "next/link";
 
 const Header = () => {
+  const user = null;
+  const { handleChange, input } = useAuth();
   return (
     <header className="py-3 borders-b">
       <div className="container mx-auto flex-between">
@@ -15,21 +21,29 @@ const Header = () => {
           <span className="px-3 py-1 bg-primary text-background ">SHOP</span>
         </div>
 
-        <div className="w-[250px] md:w-[300px]">
-          <Input className="w-full" />
+        <div className="w-[250px] md:w-[300px] relative">
+          <InputElement
+            type="search"
+            name="search"
+            value={input.search}
+            style="header-search-input"
+            onChange={handleChange}
+            placeholder="Search product name"
+          />
+          {input.search && <SearchDropdown />}
         </div>
 
         <div className="flex-between space-x-4">
-          {/* <ShoppingCart />
+          <ShoppingCart />
           {user ? (
-            <UserProfile handleSignOut={handleSignOut} />
+            <UserProfile />
           ) : (
             <div className="flex space-x-4">
-              <Button onClick={handleSignIn} className="text-xs">
-                Sign-In
+              <Button className="text-xs">
+                <Link href="/login">Login</Link>
               </Button>
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </header>

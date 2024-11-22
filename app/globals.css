@@ -71,3 +71,80 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
+
+/* header section */
+.header-search-input {
+  @apply px-2 py-1 w-full borders rounded-md;
+}
+
+.header-search-dropdown {
+  @apply absolute w-full rounded-md p-4 borders bg-white top-[50px] z-30;
+}
+
+/* homepage section */
+.home-category-image {
+  @apply h-[175px] flex-center;
+}
+
+/* ========= end of home page section */
+
+/* auth page section [ login and register ] */
+
+.auth-page-image {
+  @apply border-2 w-full h-full flex-center;
+}
+.auth-form-margin {
+  @apply w-full md:w-1/2 px-4 py-4 space-y-2 text-center;
+}
+
+.auth-image-margin {
+  @apply hidden md:flex-center md:w-1/2;
+}
+
+.auth-form {
+  @apply space-y-4;
+}
+
+.auth-wrapper {
+  @apply space-y-4;
+}
+
+.auth-button {
+  @apply w-full flex-center rounded-md tracking-[2px];
+}
+
+.auth-title {
+  @apply flex-center text-2xl uppercase font-medium;
+}
+.auth-input {
+  @apply h-12 border-b-2 w-full outline-none mb-4 focus:border-primary;
+}
+
+.auth-loading {
+  @apply flex-center bg-primary w-full hover:bg-primary rounded-md cursor-not-allowed;
+}
+
+/* ===== end of auth page section */
+.product-card-image {
+  @apply flex-center borders h-[200px] overflow-hidden;
+}
+
+/* product detail page section */
+.product-detail-parent {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-x-4 space-y-4 md:space-y-0;
+}
+.product-detail-image {
+  @apply w-full flex flex-wrap space-y-2 md:space-y-0;
+}
+
+.product-detail-multiple {
+  @apply w-full flex mt-4 md:mt-0 order-2 md:order-none md:flex-col md:w-[20%] justify-between;
+}
+
+.detail-single-image {
+  @apply w-full md:h-auto h-[350px] md:w-[80%] borders flex-center;
+}
+
+.detail-multiple-image {
+  @apply w-[80px] h-[80px] borders;
+}
