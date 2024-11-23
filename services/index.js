@@ -17,21 +17,24 @@ instance.interceptors.request.use((config) => {
 instance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response && error.response.status === 401) {
-      try {
-        const { data } = await instance.get("/api/auth/refresh");
-        sessions.set("accessToken", data.data, {
-          secure: true,
-          expires: 15 / 1440, // Set expired 15 minutes
-        });
+    const refreshToken = Cookies.get("refreshToken") || null;
+    if (refreshToken) {
+      if (error.response && error.response.status === 401) {
+        try {
+          const { data } = await instance.get("/api/auth/refresh");
+          sessions.set("accessToken", data.data, {
+            secure: true,
+            expires: 15 / 1440, // Set expired 15 minutes
+          });
 
-        error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
-        return instance.request(error.config);
-      } catch (refreshError) {
-        window.location.href = "/login";
+          error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
+          return instance.request(error.config);
+        } catch (refreshError) {
+          window.location.href = "/login";
+        }
       }
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
   }
 );
 
