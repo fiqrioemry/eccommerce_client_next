@@ -10,11 +10,11 @@ import LoadingPage from "@/components/LoadingPage";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const refreshToken = Cookies.get("token") || null;
+  const pathname = usePathname();
+  const accessToken = Cookies.get("accessToken") | null;
+  const refreshToken = Cookies.get("refreshToken") | null;
   const router = useRouter();
   const dispatch = useDispatch();
-  const pathname = usePathname();
-  const [user, setUser] = useState(null);
   const [hidden, setHidden] = useState(true);
   const [pageLoading, setPageLoading] = useState(true);
   const [input, setInput] = useState({
@@ -23,7 +23,8 @@ export const AuthProvider = ({ children }) => {
     passwordConfirm: "",
     search: "",
   });
-  const { success, failed, loading, message } = useSelector(
+
+  const { user, success, failed, loading, message } = useSelector(
     (state) => state.login
   );
 
@@ -35,7 +36,6 @@ export const AuthProvider = ({ children }) => {
     if (failed) {
       dispatch(reset());
     }
-
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
@@ -49,34 +49,24 @@ export const AuthProvider = ({ children }) => {
     if (success) {
       router.push("/");
       dispatch(reset());
-    } else if (success & failed) dispatch(reset());
+    } else if (success && failed) {
+      dispatch(reset());
+    }
   }, [dispatch, router, failed, success]);
 
   useEffect(() => {
-    if (refreshToken) {
-      setUser(refreshToken);
+    if (pageLoading) {
+      setPageLoading(false);
+    } else if (!accessToken && refreshToken) {
+      setPageLoading(false);
+      dispatch(getUserDetails());
     }
-    setPageLoading(false);
-  }, [refreshToken]);
+  }, [pageLoading, accessToken, refreshToken, dispatch]);
 
-  const authorizedUser = [
-    "/users",
-    "/users/settings",
-    "/users/address",
-    "/users/transaction",
-    "/cart/shipment",
-  ];
-
-  const authenticatedUser = ["/login", "/register"];
-
-  if (pathname.includes(authorizedUser)) {
-    if (!user) router.push("/login");
-  } else if (pathname.includes(authenticatedUser)) {
-    if (user) router.push("/");
-  }
   return (
     <AuthContext.Provider
       value={{
+        user,
         input,
         failed,
         hidden,
@@ -88,7 +78,6 @@ export const AuthProvider = ({ children }) => {
         handleChange,
       }}
     >
-      {pageLoading && <LoadingPage />}
       {children}
     </AuthContext.Provider>
   );

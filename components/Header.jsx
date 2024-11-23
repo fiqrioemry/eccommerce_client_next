@@ -11,7 +11,6 @@ import SearchDropdown from "./SearchDropdown";
 import Link from "next/link";
 
 const Header = () => {
-  const user = null;
   const { handleChange, input } = useAuth();
   return (
     <header className="py-3 borders-b">
@@ -35,15 +34,12 @@ const Header = () => {
 
         <div className="flex-between space-x-4">
           <ShoppingCart />
-          {user ? (
-            <UserProfile />
-          ) : (
-            <div className="flex space-x-4">
-              <Button className="text-xs">
-                <Link href="/login">Login</Link>
-              </Button>
-            </div>
-          )}
+
+          <div className="flex space-x-4">
+            <Button className="text-xs">
+              <Link href="/login">Login</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </header>

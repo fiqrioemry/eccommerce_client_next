@@ -79,7 +79,6 @@ const Page = () => {
             <div>
               <span> Dont have an account ?</span>
               <Link href="/register" className="font-semibold">
-                {" "}
                 Register here
               </Link>
             </div>

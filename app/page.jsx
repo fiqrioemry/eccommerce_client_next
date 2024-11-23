@@ -6,15 +6,11 @@ import RecommendProduct from "@/components/home/RecommendProduct";
 
 const Home = async () => {
   return (
-    <>
-      <Header />
-      <section className="py-6 md:py-10 space-y-6 md:space-y-10">
-        <Banner />
-        <Categories />
-        <RecommendProduct />
-      </section>
-      <Footer />
-    </>
+    <section className="py-6 md:py-10 space-y-6 md:space-y-10">
+      <Banner />
+      <Categories />
+      <RecommendProduct />
+    </section>
   );
 };
 

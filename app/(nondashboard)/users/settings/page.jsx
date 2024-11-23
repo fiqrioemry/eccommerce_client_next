@@ -1,9 +1,25 @@
+"use client";
+
 import SectionHead from "@/components/common/SectionHead";
 import { Button } from "@/components/ui/button";
+import Cookies from "js-cookie";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import callApi from "../../../../services/index";
 
-const page = () => {
+const Page = () => {
+  const fetchData = async () => {
+    try {
+      const response = await callApi.get("/api/users/profile");
+      console.log("PRINT LOG INFO:", response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       {" "}
@@ -46,4 +62,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -11,7 +11,7 @@ import {
 } from "../constant/AuthType";
 
 const initialState = {
-  data: [],
+  user: null,
   loading: false,
   success: false,
   failed: false,
@@ -24,12 +24,11 @@ export const loginReducer = (state = initialState, action) => {
       return { ...state, loading: true, message: "" };
 
     case LOGIN_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         loading: false,
         success: true,
-        data: action.payload.data,
+        user: action.payload.data.user,
         message: action.payload.message,
       };
 
