@@ -2,19 +2,18 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { login, reset } from "../redux/action/AuthAction";
+import { reset, userLogin } from "../redux/action/AuthAction";
 import React, { createContext, useContext, useState, useEffect } from "react";
-import Cookies from "js-cookie";
-import LoadingPage from "@/components/LoadingPage";
+
+import { useGlobal } from "./GlobalProvider";
+import { getUserDetails } from "@/redux/action/UserAction";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const pathname = usePathname();
-  const accessToken = Cookies.get("accessToken") | null;
-  const refreshToken = Cookies.get("refreshToken") | null;
   const router = useRouter();
   const dispatch = useDispatch();
+  const { refreshToken } = useGlobal();
   const [hidden, setHidden] = useState(true);
   const [pageLoading, setPageLoading] = useState(true);
   const [input, setInput] = useState({
@@ -24,8 +23,8 @@ export const AuthProvider = ({ children }) => {
     search: "",
   });
 
-  const { user, success, failed, loading, message } = useSelector(
-    (state) => state.login
+  const { login, success, failed, loading, message } = useSelector(
+    (state) => state.auth
   );
 
   const handleClick = () => {
@@ -39,9 +38,13 @@ export const AuthProvider = ({ children }) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(input));
+    dispatch(userLogin(input));
+  };
+
+  const handleLogout = () => {
+    console.log("logout");
   };
 
   // login and register
@@ -55,18 +58,18 @@ export const AuthProvider = ({ children }) => {
   }, [dispatch, router, failed, success]);
 
   useEffect(() => {
-    if (pageLoading) {
-      setPageLoading(false);
-    } else if (!accessToken && refreshToken) {
+    if (refreshToken) {
       setPageLoading(false);
       dispatch(getUserDetails());
+    } else {
+      setPageLoading(false);
     }
-  }, [pageLoading, accessToken, refreshToken, dispatch]);
+  }, [pageLoading, refreshToken, dispatch]);
 
   return (
     <AuthContext.Provider
       value={{
-        user,
+        login,
         input,
         failed,
         hidden,
@@ -76,6 +79,7 @@ export const AuthProvider = ({ children }) => {
         handleClick,
         handleSubmit,
         handleChange,
+        handleLogout,
       }}
     >
       {children}

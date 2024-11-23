@@ -11,10 +11,9 @@ import {
 } from "../constant/AuthType";
 
 import callApi from "../../services/index";
-import axios from "axios";
 import Cookies from "js-cookie";
 
-export const login = (formData) => async (dispatch) => {
+export const userLogin = (formData) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_PROCESS });
 
@@ -24,7 +23,6 @@ export const login = (formData) => async (dispatch) => {
       secure: true,
       expires: 15 / 1440, // Set expired 15 minutes
     });
-
     dispatch({ type: LOGIN_SUCCESS, payload: response.data.data.user });
   } catch (error) {
     dispatch({ type: LOGIN_FAILED, payload: error.response.data.message });

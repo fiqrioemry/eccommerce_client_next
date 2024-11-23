@@ -9,7 +9,7 @@ import {
 import { FaUserCircle } from "react-icons/fa";
 import { Button } from "../ui/button";
 
-const UserProfile = ({ handleSignOut }) => {
+const UserProfile = ({ handleLogout, user }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -28,7 +28,7 @@ const UserProfile = ({ handleSignOut }) => {
         <div className="flex flex-col space-y-2">
           <Button variant="primary">profile</Button>
           <Button variant="primary">settings</Button>
-          <Button onClick={handleSignOut} variant="primary">
+          <Button onClick={handleLogout} variant="primary">
             logout
           </Button>
         </div>

@@ -9,9 +9,14 @@ import InputElement from "./InputElement";
 import { useAuth } from "@/provider/AuthProvider";
 import SearchDropdown from "./SearchDropdown";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Header = () => {
-  const { handleChange, input } = useAuth();
+  const { login } = useSelector((state) => state.auth);
+  const { input, handleChange, handleLogout } = useAuth();
+  const { user, loading } = useSelector((state) => state.user);
+  console.log(user);
   return (
     <header className="py-3 borders-b">
       <div className="container mx-auto flex-between">
@@ -34,12 +39,15 @@ const Header = () => {
 
         <div className="flex-between space-x-4">
           <ShoppingCart />
-
-          <div className="flex space-x-4">
+          {!login ? (
             <Button className="text-xs">
               <Link href="/login">Login</Link>
             </Button>
-          </div>
+          ) : loading ? (
+            <div>{<LoadingSpinner />}</div>
+          ) : (
+            <UserProfile handleLogout={handleLogout} user={user} />
+          )}
         </div>
       </div>
     </header>
