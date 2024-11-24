@@ -2,10 +2,9 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { PathWithNavbar } from "@/config";
+import { IncludeNavbarFooter, initialInputState } from "@/config";
 import { useRouter } from "next/navigation";
 import { useGlobal } from "./GlobalProvider";
-import LoadingPage from "@/components/LoadingPage";
 import { useDispatch, useSelector } from "react-redux";
 import { reset, userLogin, userLogout } from "../redux/action/AuthAction";
 import React, { createContext, useContext, useState, useEffect } from "react";
@@ -16,29 +15,13 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { pathname } = useGlobal();
-  const [state, setState] = useState({
-    hidden: true,
-    pageLoading: true,
-  });
-  const [input, setInput] = useState({
-    email: "",
-    password: "",
-    passwordConfirm: "",
-    search: "",
-  });
-
+  const [hidden, setHidden] = useState(true);
+  const [input, setInput] = useState({ initialInputState });
   const { success, failed } = useSelector((state) => state.auth);
 
-  const handleClick = () => {
-    setState((prevState) => ({
-      ...prevState,
-      hidden: !prevState.hidden,
-    }));
-  };
-
   const handleChange = (e) => {
-    if (failed) dispatch(reset());
     const { name, value } = e.target;
+    if (failed) dispatch(reset());
     setInput((prevInput) => ({
       ...prevInput,
       [name]: value,
@@ -48,14 +31,15 @@ export const AuthProvider = ({ children }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(userLogin(input));
-    setInput({
-      email: "",
-      password: "",
-    });
+    resetInputState();
   };
 
   const handleLogout = () => {
     dispatch(userLogout());
+  };
+
+  const resetInputState = () => {
+    setInput(initialInputState);
   };
 
   useEffect(() => {
@@ -64,35 +48,27 @@ export const AuthProvider = ({ children }) => {
         router.push("/");
       } else if (pathname === "/register") {
         router.push("/login");
+      } else if (AuthRoute.includes(pathname)) {
+        router.push("/login");
       }
       dispatch(reset());
     }
   }, [dispatch, router, success, pathname]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setState((prevState) => ({
-        ...prevState,
-        pageLoading: false,
-      }));
-    }, 2500);
-  }, []);
-
   return (
     <AuthContext.Provider
       value={{
         input,
-        state,
-        setInput,
-        handleClick,
+        hidden,
+        setHidden,
         handleSubmit,
         handleChange,
         handleLogout,
       }}
     >
-      {PathWithNavbar.includes(pathname) && <Header />}
-      {state.pageLoading ? <LoadingPage /> : children}
-      {PathWithNavbar.includes(pathname) && <Footer />}
+      {IncludeNavbarFooter.includes(pathname) && <Header />}
+      {children}
+      {IncludeNavbarFooter.includes(pathname) && <Footer />}
     </AuthContext.Provider>
   );
 };

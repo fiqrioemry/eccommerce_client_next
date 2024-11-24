@@ -1,4 +1,4 @@
-export const PathWithNavbar = [
+export const IncludeNavbarFooter = [
   "/",
   "/users",
   "/users/settings",
@@ -8,7 +8,7 @@ export const PathWithNavbar = [
   "/product/:id",
 ];
 
-export const PathWithoutNavbar = [
+export const ExcludeNavbarFooter = [
   "/login",
   "/register",
   "/myshop",
@@ -16,11 +16,20 @@ export const PathWithoutNavbar = [
   "/*", // page not found
 ];
 
-export const RestrictedPath = ["/dashboard", "/dashboard/:path"];
+export const ProtectedRoute = ["/dashboard", "/dashboard/:path"];
 
-export const NonAuthPath = ["/login", "/register"];
+export const NonAuthRoute = [
+  "/login",
+  "/register",
+  "/",
+  "/product/:id",
+  "/search/:params",
+  "/category/:params",
+  "/:shopname/product/:id",
+  "/:shopname",
+];
 
-export const AuthPath = [
+export const AuthRoute = [
   "/users",
   "/users/settings",
   "/users/address",
@@ -32,3 +41,10 @@ export const AuthPath = [
   "/dashboard/seller",
   "/myshop",
 ];
+
+export const initialInputState = {
+  email: "",
+  password: "",
+  passwordConfirm: "",
+  search: "",
+};

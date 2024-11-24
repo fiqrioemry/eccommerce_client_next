@@ -10,13 +10,12 @@ import ImageElement from "@/components/ImageElement";
 import HiddenElement from "@/components/HiddenElement";
 
 const Page = () => {
-  const { handleClick, handleSubmit, handleChange, input, state } = useAuth();
   const { failed, loading, message } = useSelector((state) => state.auth);
+  const { handleSubmit, handleChange, input, hidden, setHidden } = useAuth();
 
   return (
     <section>
       <div className="container mx-auto">
-        {/* 1. navigation  path info */}
         <div className="py-10 text-sm px-2">
           <div>
             <Link href="/">Home</Link> / register
@@ -24,7 +23,6 @@ const Page = () => {
         </div>
 
         <div className="flex flex-wrap mb-12">
-          {/* 2. signin image box */}
           <div className="auth-image-margin ">
             <ImageElement
               style="auth-image"
@@ -35,7 +33,6 @@ const Page = () => {
             />
           </div>
 
-          {/* 3.signin form box */}
           <div className="auth-form-margin">
             <FormElement
               status={failed}
@@ -65,9 +62,9 @@ const Page = () => {
                 value={input.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
-                type={state.hidden ? "password" : "text"}
+                type={hidden ? "password" : "text"}
               >
-                <HiddenElement value={state.hidden} handleClick={handleClick} />
+                <HiddenElement hidden={hidden} setHidden={setHidden} />
               </InputElement>
 
               <InputElement
@@ -75,10 +72,10 @@ const Page = () => {
                 style="auth-input"
                 value={input.password}
                 onChange={handleChange}
-                type={state.hidden ? "password" : "text"}
+                type={hidden ? "password" : "text"}
                 placeholder="Enter your confirmation password"
               >
-                <HiddenElement value={state.hidden} handleClick={handleClick} />
+                <HiddenElement hidden={hidden} setHidden={setHidden} />
               </InputElement>
             </FormElement>
           </div>

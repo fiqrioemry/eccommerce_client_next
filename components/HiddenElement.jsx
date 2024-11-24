@@ -1,14 +1,17 @@
+"use client";
+
 import React from "react";
 import { BiHide, BiShow } from "react-icons/bi";
 
-const HiddenElement = ({ value, handleClick }) => {
+const HiddenElement = ({ hidden, setHidden }) => {
   return (
     <div
-      value={value}
-      onClick={handleClick}
+      onClick={() => {
+        setHidden((prev) => !prev);
+      }}
       className="bg-transparent right-3 top-4 absolute cursor-pointer text-xl"
     >
-      {value ? <BiHide /> : <BiShow />}
+      {hidden ? <BiHide /> : <BiShow />}
     </div>
   );
 };
