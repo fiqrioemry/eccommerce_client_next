@@ -7,7 +7,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const token = Cookies.get("accessToken");
+  const token = localStorage.getItem("accessToken");
   if (token) {
     config.headers["Authorization"] = `Bearer ${token}`;
   }
@@ -17,25 +17,43 @@ instance.interceptors.request.use((config) => {
 instance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const refreshToken = Cookies.get("refreshToken") || null;
-    if (refreshToken) {
-      if (error.response && error.response.status === 401) {
-        try {
-          const { data } = await instance.get("/api/auth/refresh");
-          sessions.set("accessToken", data.data, {
-            secure: true,
-            expires: 15 / 1440, // Set expired 15 minutes
-          });
+    if (error.response && error.response.status === 401) {
+      try {
+        const { data } = await instance.get("/api/auth/refresh");
+        Cookies.set("accessToken", data.data, {
+          secure: true,
+          expires: 15 / 1440,
+        });
 
-          error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
-          return instance.request(error.config);
-        } catch (refreshError) {
-          window.location.href = "/login";
-        }
+        error.config.headers["Authorization"] = `Bearer ${data.data}`;
+        return instance.request(error.config);
+      } catch (refreshError) {
+        window.location.href = "/login";
       }
-      return Promise.reject(error);
     }
+    return Promise.reject(error);
   }
 );
+
+// instance.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const refreshToken = Cookies.get("refreshToken") || null;
+//     if (refreshToken) {
+//       if (error.response && error.response.status === 401) {
+//         try {
+//           const { data } = await instance.get("/api/auth/refresh");
+//           Cookies.set("accessToken", data.data, {secure : true, expires: 15 / 1440 });
+
+//           error.config.headers["Authorization"] = `Bearer ${data.data}`;
+//           return instance.request(error.config);
+//         } catch (refreshError) {
+//           window.location.href = "/login";
+//         }
+//       }
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export default instance;

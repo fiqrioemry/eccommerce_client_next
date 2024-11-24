@@ -8,11 +8,13 @@ const ButtonElement = ({
   loading,
   loadingStyle,
   handleClick = null,
+  variant = "primary",
+  disabled = false,
 }) => {
   return (
     <Button
       type="submit"
-      variant="primary"
+      variant={variant}
       className={loading ? loadingStyle : style}
       onClick={handleClick}
       disabled={loading}

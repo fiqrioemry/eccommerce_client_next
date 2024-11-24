@@ -2,36 +2,45 @@ import {
   LOGIN_PROCESS,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
+  LOGOUT_PROCESS,
+  LOGOUT_SUCCESS,
   RESET,
 } from "../constant/AuthType";
 
-import callApi from "../../services/index";
 import Cookies from "js-cookie";
-import axios from "axios";
+import callApi from "../../services/index";
 
+//  1. login
 export const userLogin = (formData) => async (dispatch) => {
   try {
     dispatch({ type: LOGIN_PROCESS });
 
-    const response = await axios.post(
-      "http://localhost:3300/api/auth/login",
-      formData,
-      {
-        withCredentials: true,
-      }
-    );
-    console.log("TESTING :", response);
-    Cookies.set("accessToken", response.data.data.accessToken, {
-      secure: true,
-      expires: 15 / 1440, // Set expired 15 minutes
+    const response = await callApi.post("/api/auth/login", formData, {
+      withCredentials: true,
     });
-    dispatch({ type: LOGIN_SUCCESS, payload: response.data.data.user });
+
+    Cookies.set("accessToken", response.data.data.accessToken, {
+      expires: 15 / 1440,
+    });
+
+    dispatch({ type: LOGIN_SUCCESS, payload: response.data });
   } catch (error) {
-    console.log("CEK :", error);
     dispatch({ type: LOGIN_FAILED, payload: error.response.data.message });
   }
 };
 
+// 2. logout
+export const userLogout = () => async (dispatch) => {
+  dispatch({ type: LOGOUT_PROCESS });
+
+  const response = await callApi.get("/api/auth/logout");
+
+  Cookies.remove("accessToken");
+
+  dispatch({ type: LOGOUT_SUCCESS, payload: response.data });
+};
+
+// 3. state reset
 export const reset = () => async (dispatch) => {
   dispatch({ type: RESET });
 };

@@ -2,22 +2,16 @@
 
 import React from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import { useAuth } from "@/provider/AuthProvider";
 import FormElement from "@/components/FormElement";
 import InputElement from "@/components/InputElement";
 import ImageElement from "@/components/ImageElement";
+import HiddenElement from "@/components/HiddenElement";
 
 const Page = () => {
-  const {
-    handleClick,
-    handleSubmit,
-    handleChange,
-    input,
-    failed,
-    loading,
-    message,
-    hidden,
-  } = useAuth();
+  const { failed, loading, message } = useSelector((state) => state.auth);
+  const { handleClick, handleSubmit, handleChange, input, state } = useAuth();
 
   return (
     <section>
@@ -66,15 +60,15 @@ const Page = () => {
               />
 
               <InputElement
-                hidden={hidden}
                 name="password"
                 style="auth-input"
                 value={input.password}
                 onChange={handleChange}
-                handleClick={handleClick}
                 placeholder="Enter your password"
-                type={hidden ? "password" : "text"}
-              />
+                type={state.hidden ? "password" : "text"}
+              >
+                <HiddenElement value={state.hidden} handleClick={handleClick} />
+              </InputElement>
             </FormElement>
             <div>
               <span> Dont have an account ?</span>

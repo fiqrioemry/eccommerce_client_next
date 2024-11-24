@@ -1,28 +1,13 @@
 "use client";
 
-import SectionHead from "@/components/common/SectionHead";
-import { Button } from "@/components/ui/button";
-import Cookies from "js-cookie";
-import Link from "next/link";
 import React, { useEffect } from "react";
-import callApi from "../../../../services/index";
+import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
+import { getUserDetails } from "@/redux/action/UserAction";
 
 const Page = () => {
-  const fetchData = async () => {
-    try {
-      const response = await callApi.get("/api/users/profile");
-      console.log("PRINT LOG INFO:", response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
   return (
     <>
-      {" "}
       <div className="flex flex-wrap borders py-4">
         {/* foto */}
         <div className="grid grid-cols-2 md:grid-cols-1 w-full md:w-[25%] px-4 gap-x-4 space-y-4">

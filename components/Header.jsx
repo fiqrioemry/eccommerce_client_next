@@ -1,22 +1,21 @@
 "use client";
 
 import React from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import UserProfile from "./common/UserProfile";
-import ShoppingCart from "./common/ShoppingCart";
 import InputElement from "./InputElement";
-import { useAuth } from "@/provider/AuthProvider";
-import SearchDropdown from "./SearchDropdown";
-import Link from "next/link";
 import { useSelector } from "react-redux";
+import ButtonElement from "./ButtonElement";
+import { useRouter } from "next/navigation";
 import LoadingSpinner from "./LoadingSpinner";
+import SearchDropdown from "./SearchDropdown";
+import ShoppingCart from "./common/ShoppingCart";
+import { useAuth } from "@/provider/AuthProvider";
+import UserMenuDropDown from "./common/UserMenuDropdown";
 
 const Header = () => {
-  const { login } = useSelector((state) => state.auth);
-  const { input, handleChange, handleLogout } = useAuth();
-  const { user, loading } = useSelector((state) => state.user);
-  console.log(user);
+  const router = useRouter();
+  const { user } = useSelector((state) => state.auth);
+  const { input, handleChange, pageLoading } = useAuth();
+
   return (
     <header className="py-3 borders-b">
       <div className="container mx-auto flex-between">
@@ -39,14 +38,17 @@ const Header = () => {
 
         <div className="flex-between space-x-4">
           <ShoppingCart />
-          {!login ? (
-            <Button className="text-xs">
-              <Link href="/login">Login</Link>
-            </Button>
-          ) : loading ? (
-            <div>{<LoadingSpinner />}</div>
+          {pageLoading ? (
+            <LoadingSpinner />
+          ) : user ? (
+            <UserMenuDropDown />
           ) : (
-            <UserProfile handleLogout={handleLogout} user={user} />
+            <ButtonElement
+              title="Login"
+              variant="primary"
+              style="auth-button"
+              handleClick={() => router.push("/login")}
+            />
           )}
         </div>
       </div>

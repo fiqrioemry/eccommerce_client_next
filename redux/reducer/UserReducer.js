@@ -5,10 +5,8 @@ import {
 } from "../constant/UserType";
 
 const initialState = {
-  user: null,
+  profile: null,
   loading: false,
-  success: false,
-  failed: false,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -20,7 +18,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        user: action.payload.data,
+        profile: action.payload,
       };
 
     default:

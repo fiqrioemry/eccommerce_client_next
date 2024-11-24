@@ -1,21 +1,25 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { reset, userLogin } from "../redux/action/AuthAction";
-import React, { createContext, useContext, useState, useEffect } from "react";
-
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { PathWithNavbar } from "@/config";
+import { useRouter } from "next/navigation";
 import { useGlobal } from "./GlobalProvider";
-import { getUserDetails } from "@/redux/action/UserAction";
+import LoadingPage from "@/components/LoadingPage";
+import { useDispatch, useSelector } from "react-redux";
+import { reset, userLogin, userLogout } from "../redux/action/AuthAction";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { refreshToken } = useGlobal();
-  const [hidden, setHidden] = useState(true);
-  const [pageLoading, setPageLoading] = useState(true);
+  const { pathname } = useGlobal();
+  const [state, setState] = useState({
+    hidden: true,
+    pageLoading: true,
+  });
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -23,58 +27,62 @@ export const AuthProvider = ({ children }) => {
     search: "",
   });
 
-  const { login, success, failed, loading, message } = useSelector(
-    (state) => state.auth
-  );
+  const { success, failed } = useSelector((state) => state.auth);
 
   const handleClick = () => {
-    setHidden((prevState) => setHidden(!prevState));
+    setState((prevState) => ({
+      ...prevState,
+      hidden: !prevState.hidden,
+    }));
   };
 
   const handleChange = (e) => {
-    if (failed) {
-      dispatch(reset());
-    }
-    setInput({ ...input, [e.target.name]: e.target.value });
+    if (failed) dispatch(reset());
+    const { name, value } = e.target;
+    setInput((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(userLogin(input));
+    setInput({
+      email: "",
+      password: "",
+    });
   };
 
   const handleLogout = () => {
-    console.log("logout");
+    dispatch(userLogout());
   };
 
-  // login and register
   useEffect(() => {
     if (success) {
-      router.push("/");
-      dispatch(reset());
-    } else if (success && failed) {
+      if (pathname === "/login") {
+        router.push("/");
+      } else if (pathname === "/register") {
+        router.push("/login");
+      }
       dispatch(reset());
     }
-  }, [dispatch, router, failed, success]);
+  }, [dispatch, router, success, pathname]);
 
   useEffect(() => {
-    if (refreshToken) {
-      setPageLoading(false);
-      dispatch(getUserDetails());
-    } else {
-      setPageLoading(false);
-    }
-  }, [pageLoading, refreshToken, dispatch]);
+    setTimeout(() => {
+      setState((prevState) => ({
+        ...prevState,
+        pageLoading: false,
+      }));
+    }, 2500);
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        login,
         input,
-        failed,
-        hidden,
-        loading,
-        message,
+        state,
         setInput,
         handleClick,
         handleSubmit,
@@ -82,7 +90,9 @@ export const AuthProvider = ({ children }) => {
         handleLogout,
       }}
     >
-      {children}
+      {PathWithNavbar.includes(pathname) && <Header />}
+      {state.pageLoading ? <LoadingPage /> : children}
+      {PathWithNavbar.includes(pathname) && <Footer />}
     </AuthContext.Provider>
   );
 };

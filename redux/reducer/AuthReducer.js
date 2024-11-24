@@ -4,14 +4,11 @@ import {
   LOGIN_FAILED,
   LOGOUT_PROCESS,
   LOGOUT_SUCCESS,
-  REGISTER_PROCESS,
-  REGISTER_SUCCESS,
-  REGISTER_FAILED,
   RESET,
 } from "../constant/AuthType";
 
 const initialState = {
-  login: false,
+  user: JSON.parse(localStorage.getItem("user")) || null,
   loading: false,
   success: false,
   failed: false,
@@ -23,14 +20,17 @@ export const authReducer = (state = initialState, action) => {
     case LOGIN_PROCESS:
       return { ...state, loading: true, message: "" };
 
-    case LOGIN_SUCCESS:
+    case LOGIN_SUCCESS: {
+      // Menyimpan objek user dalam localStorage
+      localStorage.setItem("user", JSON.stringify(action.payload.data.user));
       return {
         ...state,
-        login: true,
+        user: action.payload.data.user,
         loading: false,
         success: true,
         message: action.payload.message,
       };
+    }
 
     case LOGIN_FAILED:
       return {
@@ -39,6 +39,20 @@ export const authReducer = (state = initialState, action) => {
         failed: true,
         message: action.payload,
       };
+
+    case LOGOUT_PROCESS:
+      return { ...state, loading: true, message: "" };
+
+    case LOGOUT_SUCCESS: {
+      localStorage.removeItem("user");
+      return {
+        ...state,
+        user: null,
+        loading: false,
+        success: true,
+        message: action.payload.message,
+      };
+    }
 
     case RESET:
       return {
